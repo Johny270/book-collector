@@ -1,0 +1,30 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block head %}
+<link rel="stylesheet" href="{% static 'css/books/book-index.css' %}">
+{% endblock%}
+
+{% block content %}
+
+<section>
+  <h1>Book List</h1>
+  <img src="{% static 'images/dariusz-sankowsky.jpg' %}" alt="A book image">
+</section>
+
+<section>
+  {% for book in books %}
+    <div class="card">
+      <div class="card-content">
+        <div class="card-img-container">
+          <img src="{% static 'images/book-cover-1.jpg' %}" alt="A book cover image">
+        </div>
+        <h2>{{ book.name }}</h2>
+        <h4>{{ book.author }}</h4>
+        <p>{{ book.description }}</p>
+      </div>
+    </div>
+  {% endfor %}
+</section>
+
+{% endblock %}
