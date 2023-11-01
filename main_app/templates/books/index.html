@@ -12,17 +12,19 @@
   <img src="{% static 'images/dariusz-sankowsky.jpg' %}" alt="A book image">
 </section>
 
-<section>
+<section class="card-container">
   {% for book in books %}
     <div class="card">
-      <div class="card-content">
-        <div class="card-img-container">
-          <img src="{% static 'images/book-cover-1.jpg' %}" alt="A book cover image">
+      <a href="{% url 'book-detail' book.id %}">
+        <div class="card-content">
+          <div class="card-img-container">
+            <img src="{% static 'images/book-cover-1.jpg' %}" alt="A book cover image">
+          </div>
+          <h2>{{ book.title }}</h2>
+          <h3>{{ book.author }}</h3>
+          <p>{{ book.description }}</p>
         </div>
-        <h2>{{ book.name }}</h2>
-        <h4>{{ book.author }}</h4>
-        <p>{{ book.description }}</p>
-      </div>
+      </a>
     </div>
   {% endfor %}
 </section>

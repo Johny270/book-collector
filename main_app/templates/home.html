@@ -1,0 +1,15 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block head %}
+  <link rel="stylesheet" type="text/css" href="{% static 'css/home.css' %}">
+{% endblock %}
+
+
+{% block content %}
+<section class="logo-container">
+  <div class="book-container">
+    <img src="{% static '/images/psychologie-money.jpg' %}" alt="A book about money psychologie">
+  </div>
+</section>
+{% endblock %}
