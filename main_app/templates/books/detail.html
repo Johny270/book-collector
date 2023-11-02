@@ -71,6 +71,11 @@
         class="subsection-content"
         autocomplete="off"
       >
+        {% if book.review_for_today %}
+        <p class="reviewed">{{book.name}} has received all its reviews for today!</p>
+        {% else %}
+          <p class="noreviewed">{{book.name}} need reviews!</p>
+        {% endif %}
         {% csrf_token %}
         {{ review_form.as_p }}
         <button type="submit" class="btn submit">Add Review</button>

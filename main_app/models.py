@@ -1,5 +1,6 @@
 from django.db import models
 from django.urls import reverse
+from datetime import date
 
 # Create your models here.
 ReviewTypes = (
@@ -20,6 +21,9 @@ class Book(models.Model):
   def get_absolute_url(self):
     return reverse('book-detail', kwargs={'book_id': self.id})
 
+  def review_for_today(self):
+    return self.review_set.filter(date=date.today()).count() >= len(ReviewTypes)
+
 class Review(models.Model):
   date = models.DateField()
   review_type = models.CharField(
@@ -36,6 +40,19 @@ class Review(models.Model):
 
   class Meta:
     ordering = ['-date']
+
+class Cover(models.Model):
+  cover_type = models.CharField(max_length=50)
+  color = models.CharField(max_length=20)
+
+  def __str__(self):
+    return self.cover_type
+  
+  def get_absolute_url(self):
+    return reverse('cover-detail', kwargs={'pk': self.id})
+
+    
+  
     
   
   

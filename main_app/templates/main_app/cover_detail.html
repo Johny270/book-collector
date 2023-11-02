@@ -1,0 +1,24 @@
+{% extends 'base.html' %} 
+{% load static %} 
+
+{% block head %}
+<link
+  rel="stylesheet"
+  type="text/css"
+  href="{% static 'css/covers/cover-detail.css' %}"
+/>
+{% endblock %}
+
+{% block content %}
+  
+<div class="card" style="border-color: {{ cover.color }}">
+  <div class="card-bg" style="background-color: {{ cover.color }}"></div>
+  <div class="card-content">
+    <h2>{{ cover.cover_type }}</h2>
+    <p>A {{ cover.color }} cover</p>
+  </div>
+</div>
+<a href="{% url 'cover-update' cover.id %}" class="btn warn">Edit</a>
+<a href="{% url 'cover-delete' cover.id %}" class="btn danger">Delete</a>
+
+{% endblock %}

@@ -1,7 +1,8 @@
 from django.shortcuts import render
 from django.http import HttpResponse
+from django.views.generic import ListView, DetailView
 from django.views.generic.edit import CreateView, UpdateView, DeleteView
-from .models import Book
+from .models import Book, Cover
 from .forms import ReviewForm
 from django.shortcuts import render, redirect
 
@@ -20,6 +21,24 @@ class BookUpdate(UpdateView):
 class BookDelete(DeleteView):
   model = Book
   success_url = '/books/'
+
+class CoverCreate(CreateView):
+  model = Cover
+  fields = '__all__'
+
+class CoverList(ListView):
+  model = Cover
+
+class CoverDetail(DetailView):
+  model = Cover
+
+class CoverUpdate(UpdateView):
+  model = Cover
+  fields = ['cover_type', 'color']
+
+class CoverDelete(DeleteView):
+  model = Cover
+  success_url = '/covers/'
 
 def home(request):
   return HttpResponse('<h1>Hellow World</h1>')
