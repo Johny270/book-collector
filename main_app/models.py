@@ -8,12 +8,22 @@ ReviewTypes = (
   ('C', 'Critic'),
   ('A', 'Academic')
 )
+class Cover(models.Model):
+  cover_type = models.CharField(max_length=50)
+  color = models.CharField(max_length=20)
+
+  def __str__(self):
+    return self.cover_type
+  
+  def get_absolute_url(self):
+    return reverse('cover-detail', kwargs={'pk': self.id})
 
 class Book(models.Model):
   title = models.CharField(max_length=100)
   author = models.CharField(max_length=100)
   description = models.TextField(max_length=250)
   year = models.IntegerField()
+  covers = models.ManyToManyField(Cover)
 
   def __str__(self):
       return self.title
@@ -41,15 +51,7 @@ class Review(models.Model):
   class Meta:
     ordering = ['-date']
 
-class Cover(models.Model):
-  cover_type = models.CharField(max_length=50)
-  color = models.CharField(max_length=20)
 
-  def __str__(self):
-    return self.cover_type
-  
-  def get_absolute_url(self):
-    return reverse('cover-detail', kwargs={'pk': self.id})
 
     
   

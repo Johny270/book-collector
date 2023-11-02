@@ -102,5 +102,55 @@
       {% endif %}
     </table>
   </section>
+  <section class="covers">
+    <div class="subsection-title">
+      <h2>Toys</h2>
+      {% comment %} <img src="{% static 'images/string.svg' %}" alt="A ball of string" />
+      <img src="{% static 'images/mouse.svg' %}" alt="A mouse" />
+      <img src="{% static 'images/fish.svg' %}" alt="A fishy toy" /> {% endcomment %}
+    </div>
+    <h3>{{ book.title }}'s Covers</h3>
+    <div class="subsection-content">
+      {% if book.covers.count %}
+        {% for cover in book.covers.all %}
+          <div class="cover-container">
+            <div 
+              class="color-block"
+              style="background-color: {{ cover.color }}"
+            ></div>
+            <a href="{% url 'cover-detail' cover.id %}">
+              <p>A {{ cover.color }} {{ cover.cover_type }} version of {{ book.title }}</p>
+            </a>
+          </div>
+        {% endfor %}
+      {% else %}
+        <p class="no-covers">{{book.title}} doesn't have any cover yet !</p>
+      {% endif %}
+    </div>
+    <h3>Available Covers</h3>
+    <div class="subsection-content">
+      {% if covers.count %}
+        {% for cover in covers.all %}
+          <div class="cover-container">
+            <div 
+              class="color-block"
+              style="background-color: {{ cover.color }}"
+            ></div>
+            <a href="{% url 'cover-detail' cover.id %}">
+              <p>A {{ cover.color }} {{ cover.cover_type }} of {{ book.title }}</p>
+            </a>
+            <form action="{% url 'assoc-cover' book.id cover.id %}" method="post">
+              {% csrf_token %}
+              <button type="submit" class="btn submit">Give Cover</button>
+            </form>
+          </div>
+        {% endfor %}
+      {% else %}
+        <p class="all-covers">
+          {{book.title}} has all available covers already !
+        </p>
+      {% endif %}
+    </div>
+  </section>
 </div>
 {% endblock %}

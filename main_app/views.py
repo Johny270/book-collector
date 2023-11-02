@@ -11,7 +11,7 @@ from django.shortcuts import render, redirect
 
 class BookCreate(CreateView):
   model = Book
-  fields = '__all__'
+  fields = ['title', 'author', 'description', 'year']
   success_url = '/books/'
 
 class BookUpdate(UpdateView):
@@ -52,10 +52,12 @@ def book_index(request):
 
 def book_detail(request, book_id):
   book = Book.objects.get(id=book_id)
+  covers_book_dont_have = Cover.objects.exclude(id__in = book.covers.all().values_list('id'))
   review_form = ReviewForm()
   return render(request, 'books/detail.html', { 
     'book': book,
-    'review_form': review_form
+    'review_form': review_form,
+    'covers': covers_book_dont_have
   })
 
 def add_review(request, book_id):
@@ -65,4 +67,8 @@ def add_review(request, book_id):
     new_review = form.save(commit=False)
     new_review.book_id = book_id
     new_review.save()
+  return redirect('book-detail', book_id=book_id)
+
+def assoc_cover(request, book_id, cover_id):
+  Book.objects.get(id=book_id).covers.add(cover_id)
   return redirect('book-detail', book_id=book_id)
