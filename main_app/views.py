@@ -2,6 +2,8 @@ from django.shortcuts import render
 from django.http import HttpResponse
 from django.views.generic.edit import CreateView, UpdateView, DeleteView
 from .models import Book
+from .forms import ReviewForm
+from django.shortcuts import render, redirect
 
 
 # Create your views here.
@@ -31,4 +33,17 @@ def book_index(request):
 
 def book_detail(request, book_id):
   book = Book.objects.get(id=book_id)
-  return render(request, 'books/detail.html', { 'book': book})
+  review_form = ReviewForm()
+  return render(request, 'books/detail.html', { 
+    'book': book,
+    'review_form': review_form
+  })
+
+def add_review(request, book_id):
+  form = ReviewForm(request.POST)
+
+  if form.is_valid():
+    new_review = form.save(commit=False)
+    new_review.book_id = book_id
+    new_review.save()
+  return redirect('book-detail', book_id=book_id)

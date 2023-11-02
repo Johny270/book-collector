@@ -2,6 +2,21 @@
 {% load static %}
 
 {% block head %}
+<link 
+  href="https://cdn.jsdelivr.net/npm/mc-datepicker/dist/mc-calendar.min.css" 
+  rel="stylesheet" 
+/>
+<link rel="stylesheet" href="{% static 'css/mcdp.css' %}">
+<script 
+  src="https://cdn.jsdelivr.net/npm/mc-datepicker/dist/mc-calendar.min.js"
+>
+</script>
+<link 
+  rel="stylesheet" 
+  type="text/css" 
+  href="{% static 'css/books/book-detail.css' %}"
+/>
+<script defer src="{% static 'js/book-detail.js' %}"></script>
 <link rel="stylesheet" href="text/css" href="{% static 'css/books/book-detail.css' %}">
 {% endblock %}
 
@@ -14,10 +29,73 @@
     <h1> {{ book.title }}</h1>
     <h2>{{ book.author }}</h2>
     <p>{{ book.description }}</p>
-    <div>
+    <div class="book-details-action">
       <a href="{% url 'book-update' book.id %}" class="btn warn">Edit</a>
       <a href="{% url 'book-delete' book.id %}" class="btn danger">Delete</a>
     </div>
   </div>
 </section>
+<div class="reviews-cover-container">
+  <section class="reviews">
+    <div class="subsection-title">
+      <h2>Reviews</h2>
+      {% comment %} <img 
+        src="{% static 'images/cat-cone.svg' %}" 
+        alt="An ice cream cone cat"
+      />
+      <img  {% endcomment %}
+        {% comment %} src="{% static 'images/cat-onigiri.svg' %}"
+        alt="A cat as onigiri" {% endcomment %}
+      {% comment %} />
+      <img 
+        src="{% static 'images/kitty-kabob.svg' %}" 
+        alt="A kabob of kittens"
+      /> {% endcomment %}
+    </div>
+    <table>
+      {% comment %} <thead>
+        <tr><th>Date</th><th>Review</th></tr>
+      </thead>
+      <tbody>
+        {% for review in book.review_set.all %}
+          <tr>
+            <td>{{review.date}}</td>
+            <td>{{review.get_review_type_display}}</td>
+          </tr>
+        {% endfor %}
+      </tbody> {% endcomment %}
+      <h3>Add a Feeding</h3>
+      <form
+        action="{% url 'add-review' book.id %}"
+        method="post" 
+        class="subsection-content"
+        autocomplete="off"
+      >
+        {% csrf_token %}
+        {{ review_form.as_p }}
+        <button type="submit" class="btn submit">Add Review</button>
+      </form>
+      <h3>Past Reviews</h3>
+      {% if book.review_set.all.count %}
+        <table>
+          <thead>
+            <tr><th>Date</th><th>Review</th></tr>
+          </thead>
+          <tbody>
+            {% for review in book.review_set.all %}
+              <tr>
+                <td>{{review.date}}</td>
+                <td>{{review.get_review_type_display}}</td>
+              </tr>
+            {% endfor %}
+          </tbody>
+        </table>
+      {% else %}
+        <div class="subsection-content">
+          <p>{{book.title}} Does not have any review yet !</p>
+        </div>
+      {% endif %}
+    </table>
+  </section>
+</div>
 {% endblock %}
